@@ -38,10 +38,32 @@ fun main() {
             val result = wiseSayings.removeIf { wiseSaying -> wiseSaying.id == id }
 
             if (result) {
-                println("${id} 번 명언이 삭제되었습니다.")
+                println("$id 번 명언이 삭제되었습니다.")
             } else {
-                println("${id} 번 명언은 존재하지 않습니다.")
+                println("$id 번 명언은 존재하지 않습니다.")
             }
+        }
+
+        if (command == "수정") {
+            val id = commandProcessor.getItemFromKey("id")
+
+            val wiseSaying : WiseSaying? = wiseSayings.find { w -> w.id == id }
+
+            wiseSaying?.let {
+                println("명언(기존) : ${it.content}")
+                print("명언 : ")
+                val newContent = tryInput()
+
+                println("작가(기존) : ${it.author}")
+                print("작가) ")
+                val newAuthor = tryInput()
+
+                wiseSaying.author = newAuthor
+                wiseSaying.content = newContent
+            } ?: run {
+                println("$id 번 명언은 존재하지 않습니다.")
+            }
+
 
         }
     }
