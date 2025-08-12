@@ -12,6 +12,7 @@ import java.nio.file.StandardCopyOption
 import java.nio.file.StandardOpenOption
 
 class WiseSayingFileRepository : WiseSayingRepository {
+
     private val dbPath = AppConfig.dBPath
 
     init {
@@ -87,13 +88,13 @@ class WiseSayingFileRepository : WiseSayingRepository {
     }
 
     private fun getLastId(): Int {
-        try {
-            return Paths.get("$dbPath/lastId.txt")
+        return try {
+            Paths.get("$dbPath/lastId.txt")
                 .toFile()
                 .readText()
                 .toInt()
         } catch (e: Exception) {
-            return 0
+            0
         }
     }
 

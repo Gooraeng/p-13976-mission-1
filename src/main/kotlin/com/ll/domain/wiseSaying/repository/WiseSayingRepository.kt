@@ -21,7 +21,6 @@ interface WiseSayingRepository {
 
     fun isEmpty() : Boolean
 
-    // page 관련 미반영
     fun findByQuery(keywordType: String, keyword: String, page: Int) : Page<WiseSaying> {
         // 조건에 맞는 데이터 먼저 구하기
         val data =

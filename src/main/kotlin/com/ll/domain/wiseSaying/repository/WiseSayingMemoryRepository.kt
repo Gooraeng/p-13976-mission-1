@@ -4,6 +4,7 @@ import com.ll.domain.wiseSaying.entity.WiseSaying
 import java.util.*
 
 class WiseSayingMemoryRepository : WiseSayingRepository {
+
     private var lastId = 0
     private val wiseSayings = mutableListOf<WiseSaying>()
 

@@ -5,14 +5,11 @@ import com.ll.global.Page
 import com.ll.global.SingletonObjects
 
 class WiseSayingService () {
+
     private val wiseSayingRepository = SingletonObjects.wiseSayingFileRepository
 
     fun addNewWiseSaying(content : String, author : String) : WiseSaying {
         return wiseSayingRepository.save(WiseSaying(author, content))
-    }
-
-    fun listAllWiseSayings() : List<WiseSaying> {
-        return wiseSayingRepository.findAll()
     }
 
     fun modifyWiseSaying(wiseSaying: WiseSaying, author : String, content : String) {

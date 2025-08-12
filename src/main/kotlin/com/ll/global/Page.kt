@@ -5,6 +5,7 @@ class Page<T> (
     val pages : Int,
     val data: List<T>
 ){
+
     val size = data.size
 
     fun getPageString(): String {

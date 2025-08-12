@@ -1,6 +1,6 @@
 package com.ll.global
 
-enum class Mode {
+enum class ActivateMode {
     DEV,
     TEST
 }

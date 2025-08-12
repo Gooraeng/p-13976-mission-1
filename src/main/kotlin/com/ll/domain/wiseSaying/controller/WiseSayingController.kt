@@ -6,6 +6,7 @@ import com.ll.global.SingletonObjects
 import com.ll.standard.util.InputHelper
 
 class WiseSayingController () {
+
     private val wiseSayingService = SingletonObjects.wiseSayingService
 
     fun createOne() {
@@ -29,10 +30,12 @@ class WiseSayingController () {
         val filledAll = keywordType.isNotEmpty() && keyword.isNotEmpty()
         val allEmpty = keywordType.isEmpty() && keyword.isEmpty()
 
+        // 두 키워드 검색 필드 중 하나만 입력하면 오류 발생
         if (!filledAll && !allEmpty) throw IllegalArgumentException("keywordType과 keyword 둘 다 기입되어야 합니다.")
 
         val queryResult = wiseSayingService.getListOfQueriedWiseSayings(keywordType, keyword, page)
 
+        // 검색 필터를 전부 입력했으면 뜨도록
         if (filledAll) {
             println("-----------------------------")
             println("검색타입 : $keywordType")
@@ -88,6 +91,4 @@ class WiseSayingController () {
     private fun findId(command : CommandProcessor) : Int {
         return command.getItemFromKey("id", -1)
     }
-
-
 }
