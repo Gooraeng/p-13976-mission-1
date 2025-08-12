@@ -140,7 +140,7 @@ class WiseSayingControllerTest {
             목록?keywordType=content
         """)
 
-        assertThat(result).contains("유효하지 않은 입력입니다. 다시 시도해주세요.")
+        assertThat(result).contains("keywordType과 keyword 둘 다 기입되어야 합니다.")
     }
 
     @Test
@@ -157,6 +157,50 @@ class WiseSayingControllerTest {
             목록?keyword=과거
         """)
 
-        assertThat(result).contains("유효하지 않은 입력입니다. 다시 시도해주세요.")
+        assertThat(result).contains("keywordType과 keyword 둘 다 기입되어야 합니다.")
     }
+
+    @Test
+    @DisplayName("명언 목록 without typing page")
+    fun t9() {
+        SingletonObjects.wiseSayingFileRepository.initData()
+
+        val result = Runner.run(
+            """
+               목록
+            """
+        )
+
+        assertThat(result).contains("페이지 : [ 1 ] / 2")
+    }
+
+    @Test
+    @DisplayName("명언 목록 without typing valid page")
+    fun t10() {
+        SingletonObjects.wiseSayingFileRepository.initData()
+
+        val result = Runner.run(
+            """
+               목록?page=2
+            """
+        )
+
+        assertThat(result).contains("페이지 : 1 / [ 2 ]")
+    }
+
+    @Test
+    @DisplayName("명언 목록 without typing invalid page")
+    fun t11() {
+        SingletonObjects.wiseSayingFileRepository.initData()
+
+        val result = Runner.run(
+            """
+               목록?page=3
+            """
+        )
+
+        assertThat(result).doesNotContain("페이지 : 1 / 2 / [ 3 ]")
+        assertThat(result).contains("해당 페이지를 찾을 수 없습니다.")
+    }
+
 }

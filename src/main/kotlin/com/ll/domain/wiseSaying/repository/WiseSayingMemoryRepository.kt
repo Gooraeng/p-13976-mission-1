@@ -7,6 +7,10 @@ class WiseSayingMemoryRepository : WiseSayingRepository {
     private var lastId = 0
     private val wiseSayings = mutableListOf<WiseSaying>()
 
+    init {
+        initData()
+    }
+
     override fun save(wiseSaying : WiseSaying): WiseSaying {
         if (wiseSaying.isNew()) {
             wiseSaying.id = ++lastId

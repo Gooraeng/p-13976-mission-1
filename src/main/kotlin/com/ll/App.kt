@@ -31,10 +31,10 @@ class App {
                     }
                 }
             } catch (ex : IllegalArgumentException) {
-                println("유효하지 않은 입력입니다. 다시 시도해주세요.")
-                continue
-            }
+                val exMessage = ex.message ?: "유효하지 않은 입력입니다. 다시 시도해주세요."
 
+                println(exMessage)
+            }
         }
     }
 }

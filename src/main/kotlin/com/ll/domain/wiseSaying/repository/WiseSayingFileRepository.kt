@@ -14,8 +14,8 @@ import java.nio.file.StandardOpenOption
 class WiseSayingFileRepository : WiseSayingRepository {
     private val dbPath = AppConfig.dBPath
 
-    private fun createDbPath() {
-        File(dbPath).mkdirs()
+    init {
+        initData()
     }
 
     override fun save(wiseSaying: WiseSaying): WiseSaying {
@@ -27,27 +27,6 @@ class WiseSayingFileRepository : WiseSayingRepository {
 
         saveAsFile("${wiseSaying.id}.json", wiseSaying.asJsonStr)
         return wiseSaying
-    }
-
-    private fun generateId(): Int {
-        return (getLastId() + 1).also {
-            saveLastId(it)
-        }
-    }
-
-    private fun getLastId(): Int {
-        try {
-            return Paths.get("$dbPath/lastId.txt")
-                .toFile()
-                .readText()
-                .toInt()
-        } catch (e: Exception) {
-            return 0
-        }
-    }
-
-    private fun saveLastId(lastId: Int) {
-        saveAsFile("lastId.txt", lastId.toString())
     }
 
     override fun delete(id: Int): Boolean {
@@ -74,19 +53,6 @@ class WiseSayingFileRepository : WiseSayingRepository {
         return createWiseSayingList().reversed()
     }
 
-    private fun createWiseSayingList() : List<WiseSaying> {
-        createDbPath()
-
-        return Paths.get(dbPath)
-            .toFile()
-            .listFiles()
-            ?.filter { it.name != buildFileName }
-            ?.filter { it.name.endsWith(".json") }
-            ?.map { it.readText() }
-            ?.map { WiseSaying.fromJson(it) }
-            .orEmpty()
-    }
-
     override fun clear() {
         Paths.get(dbPath)
             .toFile().deleteRecursively()
@@ -108,6 +74,45 @@ class WiseSayingFileRepository : WiseSayingRepository {
             ?.filter { it.name != buildFileName }
             ?.none { it.name.endsWith(".json") }
             ?: true
+    }
+
+    private fun createDbPath() {
+        File(dbPath).mkdirs()
+    }
+
+    private fun generateId(): Int {
+        return (getLastId() + 1).also {
+            saveLastId(it)
+        }
+    }
+
+    private fun getLastId(): Int {
+        try {
+            return Paths.get("$dbPath/lastId.txt")
+                .toFile()
+                .readText()
+                .toInt()
+        } catch (e: Exception) {
+            return 0
+        }
+    }
+
+    private fun saveLastId(lastId: Int) {
+        saveAsFile("lastId.txt", lastId.toString())
+    }
+
+    private fun createWiseSayingList() : List<WiseSaying> {
+        createDbPath()
+
+        return Paths.get(dbPath)
+            .toFile()
+            .listFiles()
+            ?.filter { it.name != buildFileName }
+            ?.filter { it.name.endsWith(".json") }
+            ?.map { it.readText() }
+            ?.map { WiseSaying.fromJson(it) }
+            ?.sortedBy { it.id }
+            .orEmpty()
     }
 
     private fun saveAsFile(fileName: String, value: String) {

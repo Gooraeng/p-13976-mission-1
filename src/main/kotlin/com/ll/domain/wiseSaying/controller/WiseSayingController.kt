@@ -22,6 +22,7 @@ class WiseSayingController () {
     fun listUp(command : CommandProcessor) {
         var keywordType : String? = null
         var keyword : String? = null
+        var page : Int = command.getItemFromKey("page", 1)
 
         // 쿼리 입력이 있었는지 확인하고
         // 필요한 파라미터들을 검사함
@@ -31,7 +32,7 @@ class WiseSayingController () {
             keyword = command.getItemFromKey("keyword")
 
             if ((keywordType != null && keyword == null) ||
-                (keywordType == null && keyword != null)) throw IllegalArgumentException()
+                (keywordType == null && keyword != null)) throw IllegalArgumentException("keywordType과 keyword 둘 다 기입되어야 합니다.")
 
             println("-----------------------------")
             println("검색타입 : $keywordType")
@@ -42,8 +43,11 @@ class WiseSayingController () {
         println("번호 / 작가 / 명언")
         println("-----------------------------")
 
-        wiseSayingService.getListOfQueriedWiseSayings(keywordType, keyword)
-            .forEach { println(it) }
+        val queryResult = wiseSayingService.getListOfQueriedWiseSayings(keywordType, keyword, page)
+
+        queryResult.data.forEach { println(it) }
+        println("-----------------------------")
+        println(queryResult.getPageString())
     }
 
     fun deleteOne(command : CommandProcessor) {
@@ -85,9 +89,7 @@ class WiseSayingController () {
     }
 
     private fun findId(command : CommandProcessor) : Int {
-        return requireNotNull(Integer.parseInt(command.getItemFromKey("id"))) {
-            "id를 찾을 수 없습니다."
-        }
+        return command.getItemFromKey("id", -1)
     }
 
 

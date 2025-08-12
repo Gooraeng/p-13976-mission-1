@@ -1,6 +1,7 @@
 package com.ll.domain.wiseSaying.service
 
 import com.ll.domain.wiseSaying.entity.WiseSaying
+import com.ll.global.Page
 import com.ll.global.SingletonObjects
 
 class WiseSayingService () {
@@ -31,7 +32,7 @@ class WiseSayingService () {
         wiseSayingRepository.build()
     }
 
-    fun getListOfQueriedWiseSayings(keywordType: String?, keyword: String?): List<WiseSaying> {
-        return wiseSayingRepository.findByQuery(keywordType, keyword)
+    fun getListOfQueriedWiseSayings(keywordType: String?, keyword: String?, page: Int): Page<WiseSaying> {
+        return wiseSayingRepository.findByQuery(keywordType, keyword, page)
     }
 }
