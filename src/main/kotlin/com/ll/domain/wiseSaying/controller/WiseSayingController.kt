@@ -1,11 +1,12 @@
 package com.ll.domain.wiseSaying.controller
 
-import com.ll.domain.wiseSaying.service.WiseSayingService
 import com.ll.global.AppConfig
 import com.ll.global.CommandProcessor
+import com.ll.global.SingletonObjects
 import com.ll.standard.util.InputHelper
 
-class WiseSayingController (val wiseSayingService: WiseSayingService) {
+class WiseSayingController () {
+    private val wiseSayingService = SingletonObjects.wiseSayingService
 
     fun createOne() {
         print("명언) ")
@@ -33,9 +34,9 @@ class WiseSayingController (val wiseSayingService: WiseSayingService) {
         val success = wiseSayingService.removeWiseSayingById(id)
 
         if (success) {
-            println("$id 번 명언이 삭제되었습니다")
+            println("${id}번 명언이 삭제되었습니다.")
         } else {
-            println("$id 번 명언은 존재하지 않습니다.")
+            println("${id}번 명언은 존재하지 않습니다.")
         }
     }
 
@@ -54,8 +55,9 @@ class WiseSayingController (val wiseSayingService: WiseSayingService) {
             val newAuthor = InputHelper.fillText()
 
             wiseSayingService.modifyWiseSaying(wiseSaying, newAuthor, newContent)
+            println("${id}번 명언이 수정되었습니다.")
         } ?: run {
-            println("$id 번 명언은 존재하지 않습니다.")
+            println("${id}번 명언은 존재하지 않습니다.")
         }
     }
 

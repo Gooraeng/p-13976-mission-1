@@ -2,9 +2,10 @@ package com.ll.global
 
 object AppConfig {
     private val _baseDbPath = "db"
-    private val _dbPath = "$_baseDbPath/wiseSaying/"
+    private val _dbPath = "$_baseDbPath/wiseSaying"
     private val _buildFileName = "data.json"
-    private val _buildFilePath = "$_dbPath/$_buildFileName/"
+
+    private var _mode = Mode.DEV
 
     val dBPath: String
         get() = _dbPath
@@ -12,6 +13,14 @@ object AppConfig {
     val buildFileName: String
         get() = _buildFileName
 
-    val buildFilePath: String
-        get() = _buildFilePath
+    fun activateDevMode() {
+        _mode = Mode.DEV
+    }
+
+    fun activateTestMode() {
+        _mode = Mode.TEST
+    }
+
+    val mode : Mode
+        get() = _mode
 }

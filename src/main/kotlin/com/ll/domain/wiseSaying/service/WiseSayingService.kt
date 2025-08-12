@@ -2,8 +2,15 @@ package com.ll.domain.wiseSaying.service
 
 import com.ll.domain.wiseSaying.entity.WiseSaying
 import com.ll.domain.wiseSaying.repository.WiseSayingRepository
+import com.ll.global.AppConfig
+import com.ll.global.Mode
+import com.ll.global.SingletonObjects
 
-class WiseSayingService (val wiseSayingRepository: WiseSayingRepository) {
+class WiseSayingService () {
+    private val wiseSayingRepository : WiseSayingRepository by lazy {
+        if (AppConfig.mode == Mode.DEV) SingletonObjects.wiseSayingRepository
+        else SingletonObjects.wiseSayingFileRepository
+    }
 
     fun addNewWiseSaying(content : String, author : String) : WiseSaying {
         return wiseSayingRepository.save(WiseSaying(author, content))

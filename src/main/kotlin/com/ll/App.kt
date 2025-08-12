@@ -1,18 +1,15 @@
 package com.ll
 
-import com.ll.domain.wiseSaying.controller.WiseSayingController
 import com.ll.domain.wiseSaying.enums.CommandType
-import com.ll.domain.wiseSaying.repository.WiseSayingRepository
-import com.ll.domain.wiseSaying.service.WiseSayingService
 import com.ll.global.CommandProcessor
+import com.ll.global.SingletonObjects
 import com.ll.standard.util.InputHelper
 
 class App {
+    private val wiseSayingController = SingletonObjects.wiseSayingController
+    private val systemController = SingletonObjects.systemController
 
     fun run() {
-        val wiseSayingRepository = WiseSayingRepository()
-        val wiseSayingService = WiseSayingService(wiseSayingRepository)
-        val wiseSayingController = WiseSayingController(wiseSayingService)
 
         println("== 명언 앱 ==")
 
@@ -34,7 +31,10 @@ class App {
                 CommandType.삭제 -> wiseSayingController.deleteOne(cp)
                 CommandType.수정 -> wiseSayingController.editOne(cp)
                 CommandType.빌드 -> wiseSayingController.build()
-                CommandType.종료 -> return
+                CommandType.종료 -> {
+                    systemController.terminate()
+                    break
+                }
             }
         }
     }
