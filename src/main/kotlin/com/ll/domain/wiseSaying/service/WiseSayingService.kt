@@ -25,4 +25,8 @@ class WiseSayingService (val wiseSayingRepository: WiseSayingRepository) {
     fun removeWiseSayingById(id : Int) : Boolean {
         return wiseSayingRepository.delete(id)
     }
+
+    fun buildFromCurrentWiseSayings() {
+        wiseSayingRepository.build()
+    }
 }

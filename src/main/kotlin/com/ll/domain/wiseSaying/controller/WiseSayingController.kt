@@ -1,8 +1,9 @@
 package com.ll.domain.wiseSaying.controller
 
 import com.ll.domain.wiseSaying.service.WiseSayingService
+import com.ll.global.AppConfig
 import com.ll.global.CommandProcessor
-import com.ll.standard.InputHelper
+import com.ll.standard.util.InputHelper
 
 class WiseSayingController (val wiseSayingService: WiseSayingService) {
 
@@ -56,6 +57,11 @@ class WiseSayingController (val wiseSayingService: WiseSayingService) {
         } ?: run {
             println("$id 번 명언은 존재하지 않습니다.")
         }
+    }
+
+    fun build() {
+        wiseSayingService.buildFromCurrentWiseSayings()
+        println("${AppConfig.buildFileName} 파일의 내용이 갱신되었습니다.")
     }
 
     private fun findId(command : CommandProcessor) : Int {

@@ -5,5 +5,6 @@ enum class CommandType {
     삭제,
     목록,
     수정,
+    빌드,
     종료
 }

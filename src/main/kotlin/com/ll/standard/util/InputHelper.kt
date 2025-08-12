@@ -1,4 +1,4 @@
-package com.ll.standard
+package com.ll.standard.util
 
 class InputHelper {
     companion object {

@@ -1,22 +1,55 @@
 package com.ll.domain.wiseSaying.entity
 
-class WiseSaying (var author : String, var content : String) {
-    private var _id = 0
+import com.ll.standard.util.JsonHelper
 
-    override fun toString(): String {
-        return "$_id / $author / $content"
+class WiseSaying (
+    var id : Int = 0,
+    var author : String,
+    var content : String
+) {
+
+    constructor(author : String, content: String) : this (0, author, content)
+
+    companion object {
+        fun fromJson(json: String): WiseSaying {
+            val map = JsonHelper.toMap(json)
+
+            return WiseSaying(
+                id = map["id"] as Int,
+                content = map["content"] as String,
+                author = map["author"] as String
+            )
+        }
     }
-
-    var id: Int
-        get() = _id
-        set(value) {_id = value}
 
     fun modify(author : String, content : String) {
         this.author = author
         this.content = content
     }
 
-    fun isNew() = _id == 0
+    fun isNew() = id == 0
 
+    val asMap: Map<String, Any>
+        get() {
+            return mapOf(
+                "id" to id,
+                "author " to author,
+                "content" to content
+            )
+        }
 
+    val asJsonStr: String
+        get() {
+            return """
+                {
+                    "id": $id,
+                    "author": "$author",
+                    "content": "$content"
+                }
+            """.trimIndent()
+        }
+
+    override fun toString(): String {
+        return "$id / $author / $content"
+    }
 }
