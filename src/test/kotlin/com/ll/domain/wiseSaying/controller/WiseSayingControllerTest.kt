@@ -202,5 +202,4 @@ class WiseSayingControllerTest {
         assertThat(result).doesNotContain("페이지 : 1 / 2 / [ 3 ]")
         assertThat(result).contains("해당 페이지를 찾을 수 없습니다.")
     }
-
 }

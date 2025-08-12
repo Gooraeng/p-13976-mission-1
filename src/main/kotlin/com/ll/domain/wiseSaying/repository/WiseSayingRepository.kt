@@ -23,14 +23,13 @@ interface WiseSayingRepository {
 
     // page 관련 미반영
     fun findByQuery(keywordType: String?, keyword: String?, page: Int) : Page<WiseSaying> {
-        val allWiseSayings = findAll()
-        val pages = Math.ceilDiv(allWiseSayings.size, PER_PAGE)
         var wiseSayings : List<WiseSaying>
 
         try {
+            val allWiseSayings = findAll()
             val trimSize = if (allWiseSayings.size >= PER_PAGE) PER_PAGE * page else allWiseSayings.size
-
             wiseSayings = allWiseSayings.subList(PER_PAGE * (page - 1), trimSize)
+
         } catch (e: Exception) {
             throw IllegalArgumentException("해당 페이지를 찾을 수 없습니다.")
         }
@@ -39,12 +38,11 @@ interface WiseSayingRepository {
             wiseSayings.filter { w -> w.content.contains(keyword) }
         } else if (keywordType == "author" && keyword != null) {
             wiseSayings.filter { w -> w.author.contains(keyword) }
-        } else if (keywordType.isNullOrEmpty() && keyword.isNullOrEmpty()) {
-            wiseSayings
         } else {
             emptyList()
         }
 
+        val pages = Math.ceilDiv(wiseSayings.size, PER_PAGE)
         return Page(pageNo = page, pages = pages, data = data);
     }
 
