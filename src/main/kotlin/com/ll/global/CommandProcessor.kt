@@ -36,7 +36,7 @@ class CommandProcessor (_command : String){
         return querySet[key]
     }
 
-    fun getItemFromKey(key: String, defaultValue: String): String? {
+    fun getItemFromKey(key: String, defaultValue: String): String {
         return getItemFromKey(key) ?: defaultValue
     }
 
@@ -47,7 +47,4 @@ class CommandProcessor (_command : String){
     var command: CommandType
         get() = commandType
         set(value) {throw IllegalArgumentException("명령어를 직접 입력할 수 없습니다") }
-
-    val query: String?
-        get() = queryString
 }

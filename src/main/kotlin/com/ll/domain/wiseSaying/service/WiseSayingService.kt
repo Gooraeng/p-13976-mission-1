@@ -32,7 +32,7 @@ class WiseSayingService () {
         wiseSayingRepository.build()
     }
 
-    fun getListOfQueriedWiseSayings(keywordType: String?, keyword: String?, page: Int): Page<WiseSaying> {
+    fun getListOfQueriedWiseSayings(keywordType: String, keyword: String, page: Int): Page<WiseSaying> {
         return wiseSayingRepository.findByQuery(keywordType, keyword, page)
     }
 }

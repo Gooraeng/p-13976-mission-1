@@ -22,28 +22,30 @@ interface WiseSayingRepository {
     fun isEmpty() : Boolean
 
     // page 관련 미반영
-    fun findByQuery(keywordType: String?, keyword: String?, page: Int) : Page<WiseSaying> {
-        var wiseSayings : List<WiseSaying>
+    fun findByQuery(keywordType: String, keyword: String, page: Int) : Page<WiseSaying> {
+        // 조건에 맞는 데이터 먼저 구하기
+        val data =
+            if (keywordType.isEmpty() && keyword.isEmpty()) findAll()
 
-        try {
-            val allWiseSayings = findAll()
-            val trimSize = if (allWiseSayings.size >= PER_PAGE) PER_PAGE * page else allWiseSayings.size
-            wiseSayings = allWiseSayings.subList(PER_PAGE * (page - 1), trimSize)
+            else if (keywordType == "content" && keyword.isNotEmpty()) {
+                findAll().filter { it.content.contains(keyword) }
+            }
+            else if (keywordType == "author" && keyword.isNotEmpty()) {
+                findAll().filter { it.author.contains(keyword) }
+            }
+            else emptyList()
 
-        } catch (e: Exception) {
-            throw IllegalArgumentException("해당 페이지를 찾을 수 없습니다.")
-        }
+        val start : Int = PER_PAGE * (page - 1)
+        val maxPage = Math.ceilDiv(data.size, PER_PAGE)
+        val end : Int = if (data.size >= PER_PAGE) start + PER_PAGE else data.size
 
-        val data = if (keywordType == "content" && keyword != null) {
-            wiseSayings.filter { w -> w.content.contains(keyword) }
-        } else if (keywordType == "author" && keyword != null) {
-            wiseSayings.filter { w -> w.author.contains(keyword) }
-        } else {
-            emptyList()
-        }
+        if (page <= 0 || page > maxPage) throw IllegalArgumentException("존재하지 않는 페이지입니다.")
 
-        val pages = Math.ceilDiv(wiseSayings.size, PER_PAGE)
-        return Page(pageNo = page, pages = pages, data = data);
+        return Page(
+            pageNo = page,
+            pages = maxPage,
+            data = data.subList(start, end)
+        )
     }
 
     fun initData() {

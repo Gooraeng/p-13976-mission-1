@@ -4,16 +4,30 @@ import com.ll.Runner
 import com.ll.global.AppConfig
 import com.ll.global.SingletonObjects
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import kotlin.test.Test
 
-
 class WiseSayingControllerTest {
+
+    companion object {
+        @BeforeAll
+        @JvmStatic
+        fun prepareAll() {
+            AppConfig.activateTestMode()
+        }
+
+        @AfterAll
+        @JvmStatic
+        fun cleanup() {
+            SingletonObjects.wiseSayingFileRepository.clear()
+        }
+    }
 
     @BeforeEach
     fun prepare() {
-        AppConfig.activateTestMode()
         SingletonObjects.wiseSayingFileRepository.clear()
     }
 
@@ -193,13 +207,21 @@ class WiseSayingControllerTest {
     fun t11() {
         SingletonObjects.wiseSayingFileRepository.initData()
 
-        val result = Runner.run(
+        val overPage = Runner.run(
             """
                목록?page=3
             """
         )
 
-        assertThat(result).doesNotContain("페이지 : 1 / 2 / [ 3 ]")
-        assertThat(result).contains("해당 페이지를 찾을 수 없습니다.")
+        val underPage = Runner.run(
+            """
+               목록?page=-1
+            """
+        )
+
+        assertThat(overPage).doesNotContain("페이지 : 1 / 2 / [ 3 ]")
+        assertThat(underPage).doesNotContain("페이지 : 1 / 2 / [ 3 ]")
+        assertThat(overPage).contains("존재하지 않는 페이지입니다.")
+        assertThat(underPage).contains("존재하지 않는 페이지입니다.")
     }
 }

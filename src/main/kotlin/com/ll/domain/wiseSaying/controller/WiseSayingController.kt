@@ -20,31 +20,28 @@ class WiseSayingController () {
     }
 
     fun listUp(command : CommandProcessor) {
-        var keywordType : String? = null
-        var keyword : String? = null
-        var page : Int = command.getItemFromKey("page", 1)
+        val keywordType : String = command.getItemFromKey("keywordType", "")
+        val keyword : String = command.getItemFromKey("keyword", "")
+        val page : Int = command.getItemFromKey("page", 1)
 
         // 쿼리 입력이 있었는지 확인하고
         // 필요한 파라미터들을 검사함
-        // page 반영 시 수정 예정
-        command.query?.let {
-            keywordType = command.getItemFromKey("keywordType")
-            keyword = command.getItemFromKey("keyword")
+        val filledAll = keywordType.isNotEmpty() && keyword.isNotEmpty()
+        val allEmpty = keywordType.isEmpty() && keyword.isEmpty()
 
-            if ((keywordType != null && keyword == null) ||
-                (keywordType == null && keyword != null)) throw IllegalArgumentException("keywordType과 keyword 둘 다 기입되어야 합니다.")
-
-            println("-----------------------------")
-            println("검색타입 : $keywordType")
-            println("검색어 : $keyword")
-            println("-----------------------------")
-        }
-
-        println("번호 / 작가 / 명언")
-        println("-----------------------------")
+        if (!filledAll && !allEmpty) throw IllegalArgumentException("keywordType과 keyword 둘 다 기입되어야 합니다.")
 
         val queryResult = wiseSayingService.getListOfQueriedWiseSayings(keywordType, keyword, page)
 
+        if (filledAll) {
+            println("-----------------------------")
+            println("검색타입 : $keywordType")
+            println("검색어 : $keyword")
+        }
+
+        println("-----------------------------")
+        println("번호 / 작가 / 명언")
+        println("-----------------------------")
         queryResult.data.forEach { println(it) }
         println("-----------------------------")
         println(queryResult.getPageString())
