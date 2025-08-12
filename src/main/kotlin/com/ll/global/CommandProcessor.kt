@@ -2,6 +2,9 @@ package com.ll.global
 
 import com.ll.domain.wiseSaying.enums.CommandType
 
+/*
+* 명령어 및 쿼리 스트링 처리 클래스
+* */
 class CommandProcessor (_command : String){
     private val commandType: CommandType
     private val querySet = mutableMapOf<String, String>()

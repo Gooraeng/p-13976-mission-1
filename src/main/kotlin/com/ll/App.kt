@@ -16,10 +16,8 @@ class App {
         while (true) {
             print("명령) ")
 
-            var cp : CommandProcessor?
-
             try {
-                cp = CommandProcessor(InputHelper.fillText())
+                val cp = CommandProcessor(InputHelper.fillText())
 
                 when (cp.command) {
                     CommandType.등록 -> wiseSayingController.createOne()

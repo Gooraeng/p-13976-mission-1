@@ -7,6 +7,9 @@ import com.ll.domain.wiseSaying.repository.WiseSayingMemoryRepository
 import com.ll.domain.wiseSaying.repository.WiseSayingRepository
 import com.ll.domain.wiseSaying.service.WiseSayingService
 
+/*
+* 싱글톤 기반 공용 객체 모음
+* */
 object SingletonObjects {
 
     val wiseSayingController by lazy { WiseSayingController() }

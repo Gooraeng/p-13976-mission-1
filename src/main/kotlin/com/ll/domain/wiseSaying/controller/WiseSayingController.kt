@@ -23,6 +23,9 @@ class WiseSayingController () {
         var keywordType : String? = null
         var keyword : String? = null
 
+        // 쿼리 입력이 있었는지 확인하고
+        // 필요한 파라미터들을 검사함
+        // page 반영 시 수정 예정
         command.query?.let {
             keywordType = command.getItemFromKey("keywordType")
             keyword = command.getItemFromKey("keyword")
@@ -39,7 +42,7 @@ class WiseSayingController () {
         println("번호 / 작가 / 명언")
         println("-----------------------------")
 
-        wiseSayingService.listQueryOfValues(keywordType, keyword)
+        wiseSayingService.getListOfQueriedWiseSayings(keywordType, keyword)
             .forEach { println(it) }
     }
 

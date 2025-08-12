@@ -109,7 +109,7 @@ class WiseSayingControllerTest {
     }
 
     @Test
-    @DisplayName("명언 목록 with keyword")
+    @DisplayName("명언 목록 with keywordType and keyword")
     fun t6() {
         val result = Runner.run(
             """
@@ -127,7 +127,7 @@ class WiseSayingControllerTest {
     }
 
     @Test
-    @DisplayName("명언 목록 missing required keywordType")
+    @DisplayName("명언 목록 missing required keyword")
     fun t7() {
         val result = Runner.run(
             """
@@ -144,7 +144,7 @@ class WiseSayingControllerTest {
     }
 
     @Test
-    @DisplayName("명언 목록 missing required keyword")
+    @DisplayName("명언 목록 missing required keywordType")
     fun t8() {
         val result = Runner.run(
             """

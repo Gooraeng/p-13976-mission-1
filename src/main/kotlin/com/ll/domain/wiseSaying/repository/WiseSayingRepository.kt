@@ -19,6 +19,7 @@ interface WiseSayingRepository {
 
     fun isEmpty() : Boolean
 
+    // page 관련 미반영
     fun findByQuery(keywordType: String?, keyword: String?) : List<WiseSaying> {
         val wiseSayings = findAll()
 
