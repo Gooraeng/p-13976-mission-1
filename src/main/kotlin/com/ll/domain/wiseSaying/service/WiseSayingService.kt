@@ -1,16 +1,10 @@
 package com.ll.domain.wiseSaying.service
 
 import com.ll.domain.wiseSaying.entity.WiseSaying
-import com.ll.domain.wiseSaying.repository.WiseSayingRepository
-import com.ll.global.AppConfig
-import com.ll.global.Mode
 import com.ll.global.SingletonObjects
 
 class WiseSayingService () {
-    private val wiseSayingRepository : WiseSayingRepository by lazy {
-        if (AppConfig.mode == Mode.DEV) SingletonObjects.wiseSayingRepository
-        else SingletonObjects.wiseSayingFileRepository
-    }
+    private val wiseSayingRepository = SingletonObjects.wiseSayingFileRepository
 
     fun addNewWiseSaying(content : String, author : String) : WiseSaying {
         return wiseSayingRepository.save(WiseSaying(author, content))
@@ -35,5 +29,9 @@ class WiseSayingService () {
 
     fun buildFromCurrentWiseSayings() {
         wiseSayingRepository.build()
+    }
+
+    fun listQueryOfValues(keywordType: String?, keyword: String?): List<WiseSaying> {
+        return wiseSayingRepository.findByQuery(keywordType, keyword)
     }
 }

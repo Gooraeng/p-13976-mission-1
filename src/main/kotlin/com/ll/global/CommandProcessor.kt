@@ -4,15 +4,16 @@ import com.ll.domain.wiseSaying.enums.CommandType
 
 class CommandProcessor (_command : String){
     private val commandType: CommandType
-    private val querySet = mutableMapOf<String, Int>();
+    private val querySet = mutableMapOf<String, String>()
+    private val queryString: String?
 
     init {
         val queryList = _command.split("?", limit = 2)
         commandType = CommandType.valueOf(queryList[0])
 
-        val queryString = if(queryList.size > 1) queryList[1] else ""
+        queryString = if(queryList.size > 1) queryList[1] else null
 
-        if (queryString.isNotEmpty()) {
+        queryString?.let {
             for (singleQuery in queryString.split("&")) {
                 val splitQuery = singleQuery.split("=", limit = 2)
 
@@ -21,18 +22,21 @@ class CommandProcessor (_command : String){
                 }
 
                 val key = splitQuery[0].trim()
-                val value = splitQuery[1].trim().toInt()
+                val value = splitQuery[1].trim()
 
                 querySet[key] = value
             }
         }
     }
 
-    fun getItemFromKey(key: String): Int? {
+    fun getItemFromKey(key: String): String? {
         return querySet[key]
     }
 
     var command: CommandType
         get() = commandType
         set(value) {throw IllegalArgumentException("명령어를 직접 입력할 수 없습니다") }
+
+    val query: String?
+        get() = queryString
 }

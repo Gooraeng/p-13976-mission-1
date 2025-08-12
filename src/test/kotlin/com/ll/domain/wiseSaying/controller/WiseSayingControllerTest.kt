@@ -107,4 +107,56 @@ class WiseSayingControllerTest {
 
         assertThat(result).contains("${AppConfig.buildFileName} 파일의 내용이 갱신되었습니다.")
     }
+
+    @Test
+    @DisplayName("명언 목록 with keyword")
+    fun t6() {
+        val result = Runner.run(
+            """
+            등록
+            현재를 사랑하라.
+            작자미상
+            등록
+            과거에 집착하지 마라.
+            작자미상
+            목록?keywordType=content&keyword=과거
+        """)
+
+        assertThat(result).doesNotContain("1 / 작자미상 / 현재를 사랑하라.")
+        assertThat(result).contains("2 / 작자미상 / 과거에 집착하지 마라.")
+    }
+
+    @Test
+    @DisplayName("명언 목록 missing required keywordType")
+    fun t7() {
+        val result = Runner.run(
+            """
+            등록
+            현재를 사랑하라.
+            작자미상
+            등록
+            과거에 집착하지 마라.
+            작자미상
+            목록?keywordType=content
+        """)
+
+        assertThat(result).contains("유효하지 않은 입력입니다. 다시 시도해주세요.")
+    }
+
+    @Test
+    @DisplayName("명언 목록 missing required keyword")
+    fun t8() {
+        val result = Runner.run(
+            """
+            등록
+            현재를 사랑하라.
+            작자미상
+            등록
+            과거에 집착하지 마라.
+            작자미상
+            목록?keyword=과거
+        """)
+
+        assertThat(result).contains("유효하지 않은 입력입니다. 다시 시도해주세요.")
+    }
 }

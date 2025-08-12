@@ -19,13 +19,28 @@ class WiseSayingController () {
         println("${wiseSaying.id}번 명언이 등록되었습니다.")
     }
 
-    fun listUp() {
-        val allWiseSayings = wiseSayingService.listAllWiseSayings()
+    fun listUp(command : CommandProcessor) {
+        var keywordType : String? = null
+        var keyword : String? = null
+
+        command.query?.let {
+            keywordType = command.getItemFromKey("keywordType")
+            keyword = command.getItemFromKey("keyword")
+
+            if ((keywordType != null && keyword == null) ||
+                (keywordType == null && keyword != null)) throw IllegalArgumentException()
+
+            println("-----------------------------")
+            println("검색타입 : $keywordType")
+            println("검색어 : $keyword")
+            println("-----------------------------")
+        }
 
         println("번호 / 작가 / 명언")
         println("-----------------------------")
 
-        allWiseSayings.forEach { println(it) }
+        wiseSayingService.listQueryOfValues(keywordType, keyword)
+            .forEach { println(it) }
     }
 
     fun deleteOne(command : CommandProcessor) {
@@ -67,7 +82,7 @@ class WiseSayingController () {
     }
 
     private fun findId(command : CommandProcessor) : Int {
-        return requireNotNull(command.getItemFromKey("id")) {
+        return requireNotNull(Integer.parseInt(command.getItemFromKey("id"))) {
             "id를 찾을 수 없습니다."
         }
     }
